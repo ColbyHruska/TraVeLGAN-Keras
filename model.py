@@ -235,7 +235,6 @@ class TraVeLGAN:
             yi = y[:self.batch_size]
 
             dis_loss = self.D_train([xi, yi])
-            # siam_loss = np.mean(self.S_train([xi, yi]))
             gen_loss, siam_loss = self.G_train([xi, yi])
 
             print(f"Epoch {epoch}/{num_epochs}:\t[G_loss: {gen_loss}]\t[D_loss: {dis_loss}]\t[S_loss: {siam_loss}]")

@@ -7,17 +7,12 @@ import os
 
 
 class DataLoader:
-    def __init__(self, size, batch_size, dataset='apples2oranges'):
+    def __init__(self, batch_size):
         self.batch_size = batch_size
-        self.size = (size, size)
-        if dataset == 'apples2oranges':
-            self.ROOT = '/media/bonilla/HDD_2TB_basura/databases/Apples2Oranges/Apples2Oranges'
-            self.X = glob.glob(os.path.join(self.ROOT, 'trainA', '*.jpg'))
-            self.Y = glob.glob(os.path.join(self.ROOT, 'trainB', '*.jpg'))
-        if dataset == 'dogs2cats':
-            self.ROOT = '/media/bonilla/My Book/DogsCats/data/train'
-            self.X = glob.glob(os.path.join(self.ROOT, 'dog*'))
-            self.Y = glob.glob(os.path.join(self.ROOT, 'cat*'))
+        self.x_dir = "data/trainX/"
+        self.y_dir = "data/trainY/"
+        self.x_size = len(os.listdir(self.x_dir))
+        self.y_size = len(os.listdir(self.y_dir))
         self.datagen = ImageDataGenerator(
             rotation_range=180,
             width_shift_range=0.2,
@@ -29,11 +24,9 @@ class DataLoader:
             horizontal_flip=True,
             vertical_flip=True,
             fill_mode='nearest')
-        self.n = min(len(self.X), len(self.Y)) * 10
 
     def _load_image(self, path, aug):
         img = cv2.imread(path)
-        img = cv2.resize(img, self.size)[np.newaxis, :, :, ::-1].astype('float32')
         if aug:
             img = next(self.datagen.flow(img, batch_size=1))[0]
             img = (img * 2.) - 1.
@@ -42,11 +35,11 @@ class DataLoader:
         return img
 
     def load_batch(self, aug=True):
-        random_y = np.random.choice(self.Y, size=self.batch_size)
-        y = [self._load_image(i, aug) for i in random_y]
+        random_y = np.random.randint(0, self.y_size, size=self.batch_size)
+        y = [self._load_image(f"{self.y_dir}{i}.png", aug) for i in random_y]
 
-        random_x = np.random.choice(self.X, size=self.batch_size)
-        x = [self._load_image(i, aug) for i in random_x]
+        random_x = np.random.randint(0, self.x_size, size=self.batch_size)
+        x = [self._load_image(f"{self.x_dir}{i}.png", aug) for i in random_x]
 
         return np.array(x), np.array(y)
 
