@@ -1,11 +1,11 @@
-from tensorflow.keras.layers import Conv2D, MaxPool2D, Conv2DTranspose, Input, LeakyReLU, add, Dropout, Lambda, \
+from keras.layers import Conv2D, MaxPool2D, Conv2DTranspose, Input, LeakyReLU, add, Dropout, Lambda, \
     BatchNormalization, Activation, Flatten, Dense, UpSampling2D, Concatenate, MaxPooling2D
-from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.losses import cosine_similarity
-from tensorflow.keras.initializers import RandomNormal
-from tensorflow.keras.utils import plot_model
-import tensorflow.keras.backend as K
+from keras.models import Model
+from keras.optimizers import Adam
+from keras.losses import cosine_similarity
+from keras.initializers import RandomNormal
+from keras.utils import plot_model
+import keras.backend as K
 from DataLoader import DataLoader
 import tensorflow as tf
 
